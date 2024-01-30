@@ -1,8 +1,9 @@
 {
   "name": "berry-free-material-react-cra",
   "version": "3.3.2",
+  "homepage": "https://manasa.github.io/CrunctTime_PPT_To_Web",
   "private": true,
-  "homepage": "https://berrydashboard.io/free",
+
   "dependencies": {
     "@emotion/cache": "^11.9.3",
     "@emotion/react": "^11.9.3",
@@ -32,10 +33,12 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts  --max_old_space_size=4096 start ",
+    "build": "react-scripts --max_old_space_size=4096 build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build" 
   },
   "eslintConfig": {
     "extends": [
