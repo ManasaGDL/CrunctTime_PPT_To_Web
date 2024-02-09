@@ -7,7 +7,7 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 // project imports
 import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
-import ProfileSection from './ProfileSection';
+
 import UploadFile from 'views/dashboard/Default/UploadFile';
 // import NotificationSection from './NotificationSection';
 
@@ -64,7 +64,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
       {/* notification & profile */}
       {/* <NotificationSection /> */}
       <UploadFile/> {'     '}
-      <ProfileSection />
+ 
     </>
   );
 };
