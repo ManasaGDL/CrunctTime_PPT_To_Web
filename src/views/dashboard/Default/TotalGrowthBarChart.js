@@ -117,7 +117,7 @@ useEffect(()=>{
     // setWeekData(Object.values(data[week-1]).slice(1))
     // setMetrics(Object.keys(data[week-1]).slice(1))
   }
-setdataValues(data.map(row=>(
+setdataValues(data?.map(row=>(
   Object.values(row).map((value=>value))
  
 )))

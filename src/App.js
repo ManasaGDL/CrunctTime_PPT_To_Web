@@ -5,7 +5,7 @@ import { CssBaseline, StyledEngineProvider } from '@mui/material';
 
 // routing
 import Routes from 'routes';
-import { useEffect } from 'react';
+
 // defaultTheme
 import themes from 'themes';
 import { useState } from 'react';

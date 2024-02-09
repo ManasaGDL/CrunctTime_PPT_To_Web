@@ -42,7 +42,7 @@ const PopularCard = ({ isLoading }) => {
     let maxValue =0
     let maxkey=''
     
-if(data.length>0)
+if(data?.length>0)
 {
   data.map(row=>{
     Object.keys(row).map(key=>{
