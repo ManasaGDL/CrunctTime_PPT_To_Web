@@ -1,12 +1,12 @@
 import dashboard from './dashboard';
 import pages from './pages';
-import utilities from './utilities';
+import admin from './admin';
 import other from './other';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, pages, utilities, other]
+  items: [dashboard, pages, admin, other]
 };
 
 export default menuItems;
