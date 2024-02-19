@@ -47,6 +47,7 @@ const mappingNames={
   "iserverservicerestart":"iServer service restart"
 }
   useEffect(()=>{
+    setHighestWorkingTasks({key:[],value:''})
   let arr=[]
     let maxValue =0
     let maxkey=''
@@ -54,22 +55,22 @@ const mappingNames={
 
 if(Object.keys(allMetrics).length>0)
   {  
-    for(const [key,value] of Object.entries(allMetrics))
-    {
-      if(value>=maxValue)
-      {
-        maxValue = value
-        maxkey = key
-        arr.push(maxkey)
-      }
+    // for(const [key,value] of Object.entries(allMetrics))
+    // {
+    //   if(value>=maxValue)
+    //   {
+    //     maxValue = value
+    //     maxkey = key
+    //     arr.push(maxkey)
+    //   }
      
-    }
+    // }
 
- console.log(arr)
-     setHighestWorkingTasks({key:arr,value:maxValue})
+
+     setHighestWorkingTasks(keysWithMaxValue(allMetrics))
   }
   else{
-  setHighestWorkingTasks({key:[],value:''})
+  // setHighestWorkingTasks({key:[],value:''})
   }
 // if(data?.length>0)
 // {
@@ -99,7 +100,17 @@ if(Object.keys(allMetrics).length>0)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  function keysWithMaxValue(obj) {
+    // Get the maximum value in the object
+    const max = Math.max(...Object.values(obj));
+  
+    // Filter the keys that have the maximum value
+    const keysWithMax = Object.fromEntries(
+      Object.entries(obj).filter(([key, value]) => value === max)
+    );
+  
+    return keysWithMax;
+  }
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -137,7 +148,7 @@ if(Object.keys(allMetrics).length>0)
                         
                       {Object.keys(allMetrics).length>0 && <Grid item md={10}>
                         {/* <Chip label={highestWorkingTasks?.key.join(',')} color='primary'></Chip> */}
-                        <TruncatedChip label={highestWorkingTasks?.key.join(',')} />
+                        <TruncatedChip label={Object.keys(highestWorkingTasks).join(',')} />
                       </Grid>}
                       {/* </Grid> */}
                       <Grid item>
@@ -145,7 +156,7 @@ if(Object.keys(allMetrics).length>0)
                           <Grid item>
                             <Typography variant="subtitle1" color="#69d2e7">
                             {/* {highestWorkingTasks[0][key]} */}
-                          {highestWorkingTasks?.value}
+                          {Object.values(highestWorkingTasks)[0]}
                             </Typography>
                           </Grid>
                           
