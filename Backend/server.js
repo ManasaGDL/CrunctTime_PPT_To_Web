@@ -1,11 +1,11 @@
-const express = require ("express");
+const express = require("express");
 const app= express();
 const  mysql = require('mysql');
 const cors = require('cors');
-
+app.use(express.json())
 app.use(cors());
 
-app.use(express.json())
+
 // app.use(bodyParser.json());
 
 
@@ -22,33 +22,67 @@ const db = mysql.createPool({
     database        : 'crunch-time-db',
   
   });
-
+  app.get("/tasks",(req,res)=>{
+    db.query("SELECT * FROM `crunch-time-report`",(err,result)=>{
+        if(err){
+            
+            return result.json(err);
+        } else {
+            res.send(result);
+          }
+    })
+})
   app.post('/add',
   (req,res)=>{
-    
-    // const sql = "INSERT INTO crunch-time-report(`Date`,`Prod Patching`,`Disk Alerts`,`Site-JVM/reloads & restarts`,`UAT Patching`,`Dev OS Patching`,`Server Reboot`,`iserver-service restart`) VALUES(?)";
-const values = [req?.body?.Date, req?.body?.ProdPatching, req?.body?.DiskAlerts, req?.body?.Site-JVM/reloads&restarts, req?.body?.UATPatching, req?.body?.DevOSPatching,req?.body?.ServerReboot,req?.body?.iserver-servicerestart];
- //const values= ['10-2-2023','12',"13",13,13,13,1,1]
+const values = [req.body.Date, req.body.ProdPatching, req.body.DiskAlerts, req.body.SiteJVMreloadsrestarts, req.body.UATPatching, req.body.DevOSPatching,req.body.ServerReboot,req.body.iserverservicerestart];
+console.log("Values",values)
+const sql='INSERT INTO `crunch-time-report` (`Date`, `prodpatching`, `diskalerts`, `sitejvmreloadsrestarts`, `uatpatching`, `devospatching`, `serverreboot`, `iserverservicerestart`) VALUES(?)';
 
- console.log("Testingggg",values)
-  const sql='INSERT INTO `crunch-time-report` (`Date`, `Prod Patching`, `Disk Alerts`, `Site-JVM/reloads & restarts`, `UAT Patching`, `Dev OS Patching`, `Server Reboot`, `iserver-service restart`) VALUES(?)';
-
-    // db.query(sql,(err,data)=>{
-    //     if(err)
-    //     return res.json(err);
-    // else return res.json("Inserted")
-    // })
-
-
-    
     db.query(sql,
     [values],(err,data)=>{
         if(err)
-        {console.log("body",req.body)
+        {
+        console.log(err.message)
             return res.json(req.body);
             
         }
-    else return res.json("Inserted")
+    else return res.json(data)
     })
 
 })
+
+app.get('/filterdata/:date', (req, res) => {
+    
+
+    const date = req.params.date; // Extract the date parameter
+    const sql = "select * from `crunch-time-report` where `Date` >= date(DATE_SUB(?, INTERVAL WEEKDAY(?) DAY)) and `Date` <= DATE_ADD(?, INTERVAL 6 - WEEKDAY(?) DAY);";
+ 
+    db.query(sql, 
+     [date, date, date, date],
+         (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.get('/filterdata/:month/:year', (req, res) => {
+  
+    const month = req.params.month;
+    const year = req.params.year // Extract the date parameter
+    const sql = "select * from `crunch-time-report` where MONTH(date) = ? and YEAR(Date)=?";
+ 
+    db.query(sql, 
+     [month,year],
+         (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        } else {
+            res.send(result);
+        }
+    });
+});

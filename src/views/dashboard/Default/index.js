@@ -9,15 +9,17 @@ import PopularCard from './PopularCard';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+import TotalGrowthBarChart from '../TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
-
+import { makeStyles } from '@mui/styles';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
   const [isLoading, setLoading] = useState(true);
+  const [ popularCardData , setPopularCardData] = useState({})
   useEffect(() => {
     setLoading(false);
+    
   }, []);
 
   return (
@@ -45,10 +47,10 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item xs={12} md={8}>
-            <TotalGrowthBarChart isLoading={isLoading} />
+            <TotalGrowthBarChart isLoading={isLoading} setLoading ={setLoading} setPopularCardData={setPopularCardData}/>
           </Grid>
           <Grid item xs={12} md={4}>
-            <PopularCard isLoading={isLoading} />
+            <PopularCard isLoading={isLoading} popularCardData={popularCardData}/>
           </Grid>
         </Grid>
       </Grid>

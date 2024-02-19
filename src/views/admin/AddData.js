@@ -2,6 +2,7 @@ import { Button, Grid, Link ,TextField,Typography , Stack, } from '@mui/material
 import MuiTypography from '@mui/material/Typography';
 import { useState ,useEffect} from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 // project imports
 import SubCard from 'ui-component/cards/SubCard';
 import MainCard from 'ui-component/cards/MainCard';
@@ -32,16 +33,17 @@ field:"DiskAlerts"
 field:"ServerReboot"
 },
 {type:"number",
-field:"Site-JVM/reloads&restarts"
+field:"SiteJVMreloadsrestarts"
 },
 {type:"number",
-field:"iserver-servicerestart"
+field:"iserverservicerestart"
 },
 
 ]
 const AddData = () => 
   {const [ date , setDate] = useState(dayjs(new Date()))
     const [ data, setData] = useState({})
+    const navigate = useNavigate()
     const {register,
     handleSubmit,control,setValue,
     watch,
@@ -50,18 +52,35 @@ const AddData = () =>
       'Content-type': 'application/json',
      
     }
+    useEffect(()=>{
+      fetchTasks()
+      
+      
+    },[])
+
+
+    const fetchTasks =async()=>{
+      
+        try{
+         const res= await axios.get("http://localhost:8081/tasks")
+         console.log(res)
+        }catch(e){
+         console.log(e)
+        }
+    }
     const onSubmit = async(data) => {  
     
-     setData({...data,"Date":moment(new Date(date)).format('DD-MM-YYYY')})
+     setData({...data,"Date":moment(new Date(date)).format('YYYY-MM-DD')})
+
      try{
-      const res = await axios.post("http://localhost:8081/add",{...data,"Date":moment(new Date(date)).format('DD-MM-YYYY')},
+      const res = await axios.post("http://localhost:8081/add",{...data,"Date":moment(new Date(date)).format('YYYY-MM-DD')},
       {
         headers: headers
       })
-      console.log(res)
+    navigate("/dashboard/default")
      }catch(e)
      {
-
+  console.log(e)
      }
      };
 useEffect(()=>{
@@ -70,6 +89,7 @@ console.log("data",data)
   
     
  return (
+
   <LocalizationProvider dateAdapter={AdapterDayjs}>
  <Stack direction="row" spacing={2}><MainCard title="CrunchTime-Data" >  
 
@@ -150,6 +170,7 @@ console.log("data",data)
 
   </Stack>
   </LocalizationProvider>
+  // </Suspense>
  )}
 
 export default AddData;

@@ -12,6 +12,8 @@ import { useState } from 'react';
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
 import { Context ,weekContext} from 'context/Context';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // ==============================|| APP ||============================== //
 
 const App = () => {
@@ -21,6 +23,7 @@ const [ week , setWeek] = useState(localStorage.getItem('week'))
 
   return (
    <Context.Provider value= {{data,setData}}>
+    <LocalizationProvider  dateAdapter={AdapterDayjs}>
     <weekContext.Provider value={{week,setWeek}}>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={themes(customization)}>
@@ -31,6 +34,7 @@ const [ week , setWeek] = useState(localStorage.getItem('week'))
       </ThemeProvider>
     </StyledEngineProvider>
     </weekContext.Provider>
+    </LocalizationProvider>
     </Context.Provider>
   );
 };

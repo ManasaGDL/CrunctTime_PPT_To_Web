@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem, Typography } from '@mui/material';
@@ -8,7 +9,7 @@ import { Avatar, Button, CardActions, CardContent, Divider, Grid, Menu, MenuItem
 // project imports
 import BajajAreaChartCard from './BajajAreaChartCard';
 import Card from '@mui/material/Card';
-
+import TruncatedChip from './TruncatedChip';
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
@@ -22,51 +23,79 @@ import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDown
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
-const PopularCard = ({ isLoading }) => {
+const PopularCard = ({ isLoading ,popularCardData}) => {
   const theme = useTheme();
 //  const [ data , setData]= useState(JSON.parse(localStorage.getItem('data')))
- const { data,setData}= useContext(Context)
+ const [data, setData]= useState({})
   const [anchorEl, setAnchorEl] = useState(null);
   const [ dataValues , setDataValues] = useState([])
-  const [ highestWorkingTasks, setHighestWorkingTasks]= useState([])
+  const [ highestWorkingTasks, setHighestWorkingTasks]= useState({key:[],value:''})
    const { week ,setWeek} = useContext(weekContext)
    const [ allMetrics , setAllMetrics] = useState({})
  let matchObj ={}
-// useEffect(()=>{
-// console.log("high",(highestWorkingTasks))
-// setWeekSelected(localStorage.getItem("week"))
-// },[highestWorkingTasks,localStorage.getItem("week")])
-
+useEffect(()=>{
+setAllMetrics(popularCardData)
+setData(popularCardData)
+},[popularCardData])
+const mappingNames={
+  "prodpatching":"Prod Patching",
+  "diskalerts":"Disk Alerts",
+ "sitejvmreloadsrestarts": "Site JVM reloads restarts",
+  "uatpatching":"UAT Patching",
+ "devospatching": "DevOSPatching",
+  "serverreboot":"ServerReboot",
+  "iserverservicerestart":"iServer service restart"
+}
   useEffect(()=>{
-  
+  let arr=[]
     let maxValue =0
     let maxkey=''
-    
-if(data?.length>0)
-{
-  data.map(row=>{
-    Object.keys(row).map(key=>{
-      if(key.trim()==="Week")
+
+
+if(Object.keys(allMetrics).length>0)
+  {  
+    for(const [key,value] of Object.entries(allMetrics))
+    {
+      if(value>=maxValue)
       {
-        if(row[key]===week)
-        {setAllMetrics(row)
-          for(const[key,value] of Object.entries(row))
-          {if(key.trim().toLowerCase()!=="week" && key.trim().toLowerCase()!=="month")
-            if(value>maxValue)
-            {
-              maxValue=value
-              maxkey=key
-            }
-          }
-        }
+        maxValue = value
+        maxkey = key
+        arr.push(maxkey)
       }
-    })
-  })
+     
+    }
+
+ console.log(arr)
+     setHighestWorkingTasks({key:arr,value:maxValue})
+  }
+  else{
+  setHighestWorkingTasks({key:[],value:''})
+  }
+// if(data?.length>0)
+// {
+//   data.map(row=>{
+//     Object.keys(row).map(key=>{
+//       if(key.trim()==="Week")
+//       {
+//         if(row[key]===week)
+//         {setAllMetrics(row)
+//           for(const[key,value] of Object.entries(row))
+//           {if(key.trim().toLowerCase()!=="week" && key.trim().toLowerCase()!=="month")
+//             if(value>maxValue)
+//             {
+//               maxValue=value
+//               maxkey=key
+//             }
+//           }
+//         }
+//       }
+//     })
+//   })
  
-console.log("test")
-setHighestWorkingTasks( [{[maxkey]:maxValue}])
-}
-},[data,week])
+
+// setHighestWorkingTasks( [{[maxkey]:maxValue}])
+// }
+},[allMetrics])
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -86,35 +115,37 @@ setHighestWorkingTasks( [{[maxkey]:maxValue}])
               
               <Grid item xs={12}>
                 <Grid container alignContent="center" justifyContent="space-between">
-                  <Grid item>
+                 { Object.keys(allMetrics).length===0?<Grid item>
+                    <Typography variant="h4"  >No Data to show</Typography>
+                  </Grid>:<Grid item>
                     <Typography variant="h4"  >Majorly Worked</Typography>
-                  </Grid>
+                  </Grid>}
                   <Grid item>
                     
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ pt: '16px !important' }}>
-                {/* <BajajAreaChartCard /> */}
+            
               </Grid>
               <Grid item xs={12}>
-                {highestWorkingTasks.length>0 && Object.keys(highestWorkingTasks[0]).length>0 && Object.keys(highestWorkingTasks[0])?.map(key=>{
-                  
-                  return <Grid container direction="column" xs={12} md={6}>
+              
+                  <Grid container direction="column" xs={12} md={6}>
                         <Grid item>
                     <Grid container alignItems="center" justifyContent="space-between">
-                      
-                      <Grid item >
-                        <Chip label={key} color='primary'></Chip>
-                        {/* <Typography variant="subtitle1" color={'#d4526e'}>
-                          {key}
-                        </Typography> */}
-                      </Grid>
+                      {/* <Grid item> */}
+                        
+                      {Object.keys(allMetrics).length>0 && <Grid item md={10}>
+                        {/* <Chip label={highestWorkingTasks?.key.join(',')} color='primary'></Chip> */}
+                        <TruncatedChip label={highestWorkingTasks?.key.join(',')} />
+                      </Grid>}
+                      {/* </Grid> */}
                       <Grid item>
                         <Grid container alignItems="center" justifyContent="space-between">
                           <Grid item>
                             <Typography variant="subtitle1" color="#69d2e7">
-                            {highestWorkingTasks[0][key]}
+                            {/* {highestWorkingTasks[0][key]} */}
+                          {highestWorkingTasks?.value}
                             </Typography>
                           </Grid>
                           
@@ -125,7 +156,8 @@ setHighestWorkingTasks( [{[maxkey]:maxValue}])
                  
                 
                 
-                </Grid>})}
+                </Grid>
+                {/* })} */}
               
                
                 <Divider sx={{ my: 1.5 }} />
@@ -136,7 +168,12 @@ setHighestWorkingTasks( [{[maxkey]:maxValue}])
                     <Grid container alignItems="center" justifyContent="space-between">
                       <Grid item>
                         <Typography variant="subtitle1" color="inherit">
-                        {key}
+                        { Object.keys(mappingNames).map(objKey=>{
+                          if(objKey==key)
+                          {
+                            return mappingNames[objKey]
+                          }
+                        })}
                         </Typography>
                       </Grid>
                       <Grid item>
