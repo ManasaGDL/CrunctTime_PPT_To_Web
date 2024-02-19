@@ -147,15 +147,15 @@ if(Object.keys(allMetrics).length>0)
                       {/* <Grid item> */}
                         
                       {Object.keys(allMetrics).length>0 && <Grid item md={10}>
-                        {/* <Chip label={highestWorkingTasks?.key.join(',')} color='primary'></Chip> */}
+                   
                         <TruncatedChip label={Object.keys(highestWorkingTasks).join(',')} />
                       </Grid>}
-                      {/* </Grid> */}
+                    
                       <Grid item>
                         <Grid container alignItems="center" justifyContent="space-between">
                           <Grid item>
                             <Typography variant="subtitle1" color="#69d2e7">
-                            {/* {highestWorkingTasks[0][key]} */}
+                         
                           {Object.values(highestWorkingTasks)[0]}
                             </Typography>
                           </Grid>
