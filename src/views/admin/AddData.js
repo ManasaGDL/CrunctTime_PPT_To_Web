@@ -74,7 +74,7 @@ const AddData = () =>
      setData({...data,"Date":moment(new Date(date)).format('YYYY-MM-DD')})
 
      try{
-      const res = await axios.post("http://localhost:8081/add",{...data,"Date":moment(new Date(date)).format('YYYY-MM-DD')},
+      const res = await axios.post(`${baseURL}/add`,{...data,"Date":moment(new Date(date)).format('YYYY-MM-DD')},
       {
         headers: headers
       })
