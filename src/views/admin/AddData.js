@@ -14,6 +14,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import moment from 'moment';
 import dayjs from 'dayjs';
+import { baseURL } from 'views/pages/axios';
 // ==============================|| TYPOGRAPHY ||============================== //
 const fields =[
   
@@ -62,7 +63,7 @@ const AddData = () =>
     const fetchTasks =async()=>{
       
         try{
-         const res= await axios.get("http://localhost:8081/tasks")
+         const res= await axios.get(`${baseURL}/tasks`)
          console.log(res)
         }catch(e){
          console.log(e)

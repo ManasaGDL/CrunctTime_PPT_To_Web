@@ -23,7 +23,7 @@ import { DatePicker } from '@mui/x-date-pickers';
 import dayjs from 'dayjs';
 import { date } from 'yup';
 import axios from 'axios';
-
+import { baseURL } from 'views/pages/axios';
 const status = [
   {
     value: 'weekly',
@@ -82,14 +82,14 @@ useEffect(() => {
     
     try {
       if(value==="weekly")
-      {const response = await axios.get(`http://localhost:8081/filterdata/${weekDate.format('YYYY-MM-DD')}`);
+      {const response = await axios.get(`${baseURL}/filterdata/${weekDate.format('YYYY-MM-DD')}`);
       setLoading(false)
       setOriginalData(response?.data)
     }
     if(value==="monthly")
     {
       setLoading(false)
-      const res = await axios.get(`http://localhost:8081/filterdata/${monSelected}/${yearSelected}`)
+      const res = await axios.get(`${baseURL}/filterdata/${monSelected}/${yearSelected}`)
       setOriginalData(res?.data)
     }
     } catch (error) {
