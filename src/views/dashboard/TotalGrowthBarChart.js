@@ -9,7 +9,7 @@ import { Grid, MenuItem, TextField, Typography } from '@mui/material';
 // third-party
 import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
-
+import { mappingNames } from 'constants';
 // project imports
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
@@ -33,10 +33,7 @@ const status = [
     value: 'monthly',
     label: 'Monthly'
   },
-//   {
-//     value: 'year',
-//     label: 'This Year'
-//   }
+  
 ];
 
 
@@ -126,8 +123,14 @@ useEffect(()=>{
     }
     return accumulator;
   }, {});
-  console.log(totals)
- setParameters(Object.keys(totals))
+  const replacedObj={}
+  for(const [key,value] of Object.entries(totals))
+  {
+    const mappedKey = mappingNames[key]
+    replacedObj[mappedKey]= value
+  }
+  console.log("replaced",replacedObj)
+ setParameters(Object.keys(replacedObj))
  setparamValues(Object.values(totals))
  setPopularCardData(totals)
 }
@@ -143,8 +146,14 @@ if(value==="monthly")
     }
     return accumulator;
   }, {});
-  
- setParameters(Object.keys(totals))
+  const replacedObj={}
+  for(const [key,value] of Object.entries(totals))
+  {
+    const mappedKey = mappingNames[key]
+    replacedObj[mappedKey]= value
+  }
+  console.log("replaced",replacedObj)
+ setParameters(Object.keys(replacedObj))
  setparamValues(Object.values(totals))
  setPopularCardData(totals)
 }

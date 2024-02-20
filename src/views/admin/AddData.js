@@ -19,25 +19,32 @@ import { baseURL } from 'views/pages/axios';
 const fields =[
   
   {type:"number",
-  field:"UATPatching"
+  field:"UATPatching",
+  name:"Uat Patching (CES/TMX)"
  },
  {type:"number",
- field:"ProdPatching"
+ field:"ProdPatching",
+ name:"Prod Patching (CES/TMX)"
 },
 {type:"number",
-field:"DevOSPatching"
+field:"DevOSPatching",
+name:"Dev QA/OS Patching"
 },
 {type:"number",
-field:"DiskAlerts"
+field:"DiskAlerts",
+name:"Disk Alerts"
 },
 {type:"number",
-field:"ServerReboot"
+field:"ServerReboot",
+name:"Server Reboot"
 },
 {type:"number",
-field:"SiteJVMreloadsrestarts"
+field:"SiteJVMreloadsrestarts",
+name:"Site Reload/JVM Restarts"
 },
 {type:"number",
-field:"iserverservicerestart"
+field:"iserverservicerestart",
+name:"iserver Service Restart"
 },
 
 ]
@@ -144,7 +151,7 @@ console.log("data",data)
     {fields.map(field=>{
       return <><Grid item md={6} container>
         <Grid item md={6}>
-        <Typography>{field.field}</Typography> 
+        <Typography>{field.name}</Typography> 
         </Grid>
         <Grid item md={6}>
         

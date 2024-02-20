@@ -15,11 +15,9 @@ import SkeletonPopularCard from 'ui-component/cards/Skeleton/PopularCard';
 import { gridSpacing } from 'store/constant';
 import { useContext } from 'react';
 import { weekContext ,Context} from 'context/Context';
+import { mappingNames } from 'constants';
 // assets
-import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
-import MoreHorizOutlinedIcon from '@mui/icons-material/MoreHorizOutlined';
-import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
+
 
 // ==============================|| DASHBOARD DEFAULT - POPULAR CARD ||============================== //
 
@@ -29,7 +27,7 @@ const PopularCard = ({ isLoading ,popularCardData}) => {
  const [data, setData]= useState({})
   const [anchorEl, setAnchorEl] = useState(null);
   const [ dataValues , setDataValues] = useState([])
-  const [ highestWorkingTasks, setHighestWorkingTasks]= useState({key:[],value:''})
+  const [ highestWorkingTasks, setHighestWorkingTasks]= useState({})
    const { week ,setWeek} = useContext(weekContext)
    const [ allMetrics , setAllMetrics] = useState({})
  let matchObj ={}
@@ -37,15 +35,7 @@ useEffect(()=>{
 setAllMetrics(popularCardData)
 setData(popularCardData)
 },[popularCardData])
-const mappingNames={
-  "prodpatching":"Prod Patching",
-  "diskalerts":"Disk Alerts",
- "sitejvmreloadsrestarts": "Site JVM reloads restarts",
-  "uatpatching":"UAT Patching",
- "devospatching": "DevOSPatching",
-  "serverreboot":"ServerReboot",
-  "iserverservicerestart":"iServer service restart"
-}
+
   useEffect(()=>{
     setHighestWorkingTasks({key:[],value:''})
   let arr=[]
@@ -108,8 +98,14 @@ if(Object.keys(allMetrics).length>0)
     const keysWithMax = Object.fromEntries(
       Object.entries(obj).filter(([key, value]) => value === max)
     );
-  
-    return keysWithMax;
+    const replacedObj = {};
+    for (const [key, value] of Object.entries(keysWithMax)) {
+      const mappedKey = mappingNames[key] || key; // Use the mapped key from mappingNames, or use the original key if not found
+      replacedObj[mappedKey] = value;
+    }
+    
+    // console.log("replaced",replacedObj);
+    return replacedObj;
   }
   const handleClose = () => {
     setAnchorEl(null);
@@ -146,7 +142,7 @@ if(Object.keys(allMetrics).length>0)
                     <Grid container alignItems="center" justifyContent="space-between">
                       {/* <Grid item> */}
                         
-                      {Object.keys(allMetrics).length>0 && <Grid item md={10}>
+                      {Object.keys(allMetrics).length>0&& Object.values(highestWorkingTasks)[0]!=0 && <Grid item >
                    
                         <TruncatedChip label={Object.keys(highestWorkingTasks).join(',')} />
                       </Grid>}
