@@ -137,7 +137,7 @@ if(Object.keys(allMetrics).length>0)
               </Grid>
               <Grid item xs={12}>
               
-                  <Grid container direction="column" xs={12} md={6}>
+                  <Grid container direction="column" xs={12} md={12}>
                         <Grid item>
                     <Grid container alignItems="center" justifyContent="space-between">
                       {/* <Grid item> */}
